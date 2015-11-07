@@ -1,0 +1,76 @@
+<html>
+
+  <head>
+    <title>Simple 2d GL</title>
+
+    <script type="text/javascript" src="../simple-2d-gl.min.js"></script>
+
+    <script id="shader-fs" type="x-shader/x-fragment">
+      precision mediump float;
+      varying vec2 vTextureCoord;
+      uniform sampler2D uSampler;
+      uniform float time;
+      uniform vec2 centerPoint;
+
+      void main(void) {
+        vec4 t = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        t.g = abs(vTextureCoord.x - centerPoint.x)/time + abs(vTextureCoord.y - centerPoint.y)/0.5;
+        gl_FragColor = t;
+      }
+    </script>
+
+    <script id="shader-vs" type="x-shader/x-vertex">
+      attribute vec2 aVertexPosition;
+      attribute vec2 aTextureCoord;
+      varying vec2 vTextureCoord;
+      void main(void) {
+        gl_Position = vec4(aVertexPosition, 0, 1);
+        vTextureCoord = aTextureCoord;
+      }
+    </script>
+  </head>
+
+  <script>
+    function confShaders(gl, shaderProgram) {
+      shaderProgram.time = gl.getUniformLocation(shaderProgram, "time");
+      shaderProgram.centerPoint = gl.getUniformLocation(shaderProgram, "centerPoint");
+    }
+
+    function wrap(val, min, max) {
+      var d = max-min;
+      if (val < min) val += d;
+      if (val > max) val -= d;
+      return val;
+    }
+
+    var centerPoint = [0.2, 0.4];
+    function update(gl, shaderProgram, delta, time) {
+      centerPoint[0] += Math.random() / 1000 - 0.001;
+      centerPoint[1] += Math.random() / 1000 - 0.001;
+      centerPoint[0] = wrap(centerPoint[0], 0, 1);
+
+      gl.uniform1f(shaderProgram.time, (time%1000)/1000 );
+      gl.uniform2f(shaderProgram.centerPoint, centerPoint[0], centerPoint[1]);
+
+      return [
+        {name: 'sp1', x: 0.1, y: 0.2, w: 0.2, h: 0.2},
+        {name: 'sp2', x: 0.7, y: 0.5, w: 0.3, h: 0.1}
+      ];
+    }
+
+    function init() {
+      var spriteDefs = {
+        "sp1": {x: 0, y:0, w:30, h:30},
+        "sp2": {x: 30, y:30, w:30, h:40}
+      };
+      new Simple2dGl('canvas', 'shader-fs', 'shader-vs', 'tex.png', spriteDefs, update, confShaders);
+    }
+  </script>
+
+  <body onload="init();">
+    <div align='center'>
+    <canvas id="canvas" style="border: none;" width="500" height="500"></canvas>
+  </div>
+  </body>
+
+</html>

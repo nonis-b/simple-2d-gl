@@ -1,0 +1,10 @@
+{
+  "name": "simple-2g-gl",
+  "version": "0.1.0",
+  "description": "Minimal WebGL for drawing 2d sprites.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nonis-b/simple-2d-gl.git"
+  },
+  "author": "nonis-b"
+}
