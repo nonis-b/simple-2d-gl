@@ -46,6 +46,10 @@ function Simple2dGl(canvasElement, fragShaderEl, vertShaderEl, texturePath, subI
   var bufs = initBuffers(gl, 100);
   var texture = initTexture(gl, texturePath);
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
-  gl.enable(gl.DEPTH_TEST);
+
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+  gl.enable(gl.BLEND);
+  gl.disable(gl.DEPTH_TEST);
+
   tick(gl, shaderProgram, bufs, texture, updateFunc, 0);
 }
