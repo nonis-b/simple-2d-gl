@@ -39,7 +39,7 @@ function Simple2dGl(canvasElement, fragShaderEl, vertShaderEl, texturePath, subI
   }
 
   var canvas = document.getElementById(canvasElement);
-  var canvasSize = {w: canvas.width, h: canvas.height};
+  var canvasSize = {x: canvas.width, y: canvas.height};
   var gl = initGL(canvas);
   var shaderProgram = initShaders(gl, fragShaderEl, vertShaderEl);
   shaderProgramInitedCallback(gl, shaderProgram);
