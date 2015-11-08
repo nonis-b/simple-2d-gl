@@ -12,7 +12,7 @@ window.requestAnimFrame = (function() {
 function Simple2dGl(canvasElement, fragShaderEl, vertShaderEl, texturePath, subImagesMap, updateFunc, shaderProgramInitedCallback) {
 
   function drawScene(gl, shaderProgram, bufs, texture, sprites) {
-    mapSprites(bufs, texture.image, sprites, subImagesMap);
+    mapSprites(bufs, canvasSize, texture.image, sprites, subImagesMap);
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enableVertexAttribArray(bufs.vertexPositionGlBuffer);
@@ -39,6 +39,7 @@ function Simple2dGl(canvasElement, fragShaderEl, vertShaderEl, texturePath, subI
   }
 
   var canvas = document.getElementById(canvasElement);
+  var canvasSize = {w: canvas.width, h: canvas.height};
   var gl = initGL(canvas);
   var shaderProgram = initShaders(gl, fragShaderEl, vertShaderEl);
   shaderProgramInitedCallback(gl, shaderProgram);
