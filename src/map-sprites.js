@@ -7,18 +7,18 @@ function mapSprites(bufs, canvasSize, texImage, sprites, spriteDefs) {
       console.log('too many sprites.');
       return;
     }
-    bufs.vertexPositions[spIndex*12 + 0] = sp.x / canvasSize.x;
-    bufs.vertexPositions[spIndex*12 + 1] = 1.0-(sp.y / canvasSize.y);
-    bufs.vertexPositions[spIndex*12 + 2] = (sp.x + sp.w)  / canvasSize.x;
-    bufs.vertexPositions[spIndex*12 + 3] = 1.0-(sp.y / canvasSize.y);
-    bufs.vertexPositions[spIndex*12 + 4] = sp.x  / canvasSize.x;
-    bufs.vertexPositions[spIndex*12 + 5] = 1.0-((sp.y + sp.h) / canvasSize.y);
-    bufs.vertexPositions[spIndex*12 + 6] = sp.x  / canvasSize.x;
-    bufs.vertexPositions[spIndex*12 + 7] = 1.0-((sp.y + sp.h) / canvasSize.y);
-    bufs.vertexPositions[spIndex*12 + 8] = (sp.x + sp.w) / canvasSize.x;
-    bufs.vertexPositions[spIndex*12 + 9] = 1.0-(sp.y / canvasSize.y);
-    bufs.vertexPositions[spIndex*12 + 10] = (sp.x + sp.w)  / canvasSize.x;
-    bufs.vertexPositions[spIndex*12 + 11] = 1.0-((sp.y + sp.h) / canvasSize.y);
+    bufs.vertexPositions[spIndex*12 + 0] = (sp.x / canvasSize.x)*2-1;
+    bufs.vertexPositions[spIndex*12 + 1] = (1.0-(sp.y / canvasSize.y))*2-1;
+    bufs.vertexPositions[spIndex*12 + 2] = ((sp.x + sp.w)  / canvasSize.x)*2-1;
+    bufs.vertexPositions[spIndex*12 + 3] = (1.0-(sp.y / canvasSize.y))*2-1;
+    bufs.vertexPositions[spIndex*12 + 4] = (sp.x  / canvasSize.x)*2-1;
+    bufs.vertexPositions[spIndex*12 + 5] = (1.0-((sp.y + sp.h) / canvasSize.y))*2-1;
+    bufs.vertexPositions[spIndex*12 + 6] = (sp.x  / canvasSize.x)*2-1;
+    bufs.vertexPositions[spIndex*12 + 7] = (1.0-((sp.y + sp.h) / canvasSize.y))*2-1;
+    bufs.vertexPositions[spIndex*12 + 8] = ((sp.x + sp.w) / canvasSize.x)*2-1;
+    bufs.vertexPositions[spIndex*12 + 9] = (1.0-(sp.y / canvasSize.y))*2-1;
+    bufs.vertexPositions[spIndex*12 + 10] = ((sp.x + sp.w)  / canvasSize.x)*2-1;
+    bufs.vertexPositions[spIndex*12 + 11] = (1.0-((sp.y + sp.h) / canvasSize.y))*2-1;
 
     var def = spriteDefs[sp.name];
     var defTrf = {
