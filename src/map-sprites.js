@@ -25,7 +25,7 @@ function mapSprites(bufs, canvasSize, texImage, sprites, spriteDefs) {
       x: def.x / srcSize.x,
       y: def.y / srcSize.y,
       w: def.w / srcSize.x,
-      h: def.h / srcSize.x,
+      h: def.h / srcSize.y,
     };
 
     bufs.textureCoords[spIndex*12 + 0] = defTrf.x;
@@ -39,6 +39,6 @@ function mapSprites(bufs, canvasSize, texImage, sprites, spriteDefs) {
     bufs.textureCoords[spIndex*12 + 8] = defTrf.x + defTrf.w;
     bufs.textureCoords[spIndex*12 + 9] = defTrf.y;
     bufs.textureCoords[spIndex*12 + 10] = defTrf.x + defTrf.w;
-    bufs.textureCoords[spIndex*12 + 11] = defTrf.x + defTrf.h;
+    bufs.textureCoords[spIndex*12 + 11] = defTrf.y + defTrf.h;
   });
 }
