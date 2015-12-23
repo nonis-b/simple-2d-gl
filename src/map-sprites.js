@@ -22,23 +22,29 @@ function mapSprites(bufs, canvasSize, texImage, sprites, spriteDefs) {
 
     var def = spriteDefs[sp.name];
     var defTrf = {
-      x: def.x / srcSize.x,
-      y: def.y / srcSize.y,
-      w: def.w / srcSize.x,
-      h: def.h / srcSize.y,
+      x1: def.x / srcSize.x,
+      y1: def.y / srcSize.y,
+      x2: (def.x + def.w) / srcSize.x,
+      y2: (def.y + def.h) / srcSize.y,
     };
 
-    bufs.textureCoords[spIndex*12 + 0] = defTrf.x;
-    bufs.textureCoords[spIndex*12 + 1] = defTrf.y;
-    bufs.textureCoords[spIndex*12 + 2] = defTrf.x + defTrf.w;
-    bufs.textureCoords[spIndex*12 + 3] = defTrf.y;
-    bufs.textureCoords[spIndex*12 + 4] = defTrf.x;
-    bufs.textureCoords[spIndex*12 + 5] = defTrf.y + defTrf.h;
-    bufs.textureCoords[spIndex*12 + 6] = defTrf.x;
-    bufs.textureCoords[spIndex*12 + 7] = defTrf.y + defTrf.h;
-    bufs.textureCoords[spIndex*12 + 8] = defTrf.x + defTrf.w;
-    bufs.textureCoords[spIndex*12 + 9] = defTrf.y;
-    bufs.textureCoords[spIndex*12 + 10] = defTrf.x + defTrf.w;
-    bufs.textureCoords[spIndex*12 + 11] = defTrf.y + defTrf.h;
+    if (sp.flipX) {
+      var tmp = defTrf.x1;
+      defTrf.x1 = defTrf.x2;
+      defTrf.x2 = tmp;
+    }
+
+    bufs.textureCoords[spIndex*12 + 0] = defTrf.x1;
+    bufs.textureCoords[spIndex*12 + 1] = defTrf.y1;
+    bufs.textureCoords[spIndex*12 + 2] = defTrf.x2;
+    bufs.textureCoords[spIndex*12 + 3] = defTrf.y1;
+    bufs.textureCoords[spIndex*12 + 4] = defTrf.x1;
+    bufs.textureCoords[spIndex*12 + 5] = defTrf.y2;
+    bufs.textureCoords[spIndex*12 + 6] = defTrf.x1;
+    bufs.textureCoords[spIndex*12 + 7] = defTrf.y2;
+    bufs.textureCoords[spIndex*12 + 8] = defTrf.x2
+    bufs.textureCoords[spIndex*12 + 9] = defTrf.y1;
+    bufs.textureCoords[spIndex*12 + 10] = defTrf.x2
+    bufs.textureCoords[spIndex*12 + 11] = defTrf.y2;
   });
 }
