@@ -21,6 +21,10 @@ function mapSprites(bufs, canvasSize, texImage, sprites, spriteDefs) {
     bufs.vertexPositions[spIndex*12 + 11] = (1.0-((sp.y + sp.h) / canvasSize.y))*2-1;
 
     var def = spriteDefs[sp.name];
+    if (!def) {
+      console.log('Sprite ' + sp.name + ' not found!');
+      return;
+    }
     var defTrf = {
       x1: def.x / srcSize.x,
       y1: def.y / srcSize.y,
