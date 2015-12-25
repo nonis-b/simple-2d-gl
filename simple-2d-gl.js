@@ -164,23 +164,46 @@ function mapSprites(bufs, canvasSize, texImage, sprites, spriteDefs) {
         x: texImage.width,
         y: texImage.height
     };
+    function rotateX(px, py, ox, oy, angle) {
+        return Math.cos(angle) * (px - ox) - Math.sin(angle) * (py - oy) + ox;
+    }
+    function rotateY(px, py, ox, oy, angle) {
+        return Math.sin(angle) * (px - ox) + Math.cos(angle) * (py - oy) + oy;
+    }
+    function scale(p, o, scale) {
+        return (p - o) * scale + o;
+    }
     sprites.forEach(function(sp, spIndex) {
         if (spIndex >= bufs.vertexPositionGlBuffer.numItems / 6) {
             console.log("too many sprites.");
             return;
         }
-        bufs.vertexPositions[spIndex * 12 + 0] = sp.x / canvasSize.x * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 1] = (1 - sp.y / canvasSize.y) * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 2] = (sp.x + sp.w) / canvasSize.x * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 3] = (1 - sp.y / canvasSize.y) * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 4] = sp.x / canvasSize.x * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 5] = (1 - (sp.y + sp.h) / canvasSize.y) * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 6] = sp.x / canvasSize.x * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 7] = (1 - (sp.y + sp.h) / canvasSize.y) * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 8] = (sp.x + sp.w) / canvasSize.x * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 9] = (1 - sp.y / canvasSize.y) * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 10] = (sp.x + sp.w) / canvasSize.x * 2 - 1;
-        bufs.vertexPositions[spIndex * 12 + 11] = (1 - (sp.y + sp.h) / canvasSize.y) * 2 - 1;
+        var cx = sp.cx !== undefined ? sp.x + sp.cx : sp.x + sp.w / 2;
+        var cy = sp.cy !== undefined ? sp.y + sp.cy : sp.y + sp.h / 2;
+        var rot = sp.rot !== undefined ? sp.rot : 0;
+        var sc = sp.scale !== undefined ? sp.scale : 1;
+        var spTrf = {
+            tlx: scale(rotateX(sp.x, sp.y, cx, cy, rot), cx, sc),
+            tly: scale(rotateY(sp.x, sp.y, cx, cy, rot), cy, sc),
+            trx: scale(rotateX(sp.x + sp.w, sp.y, cx, cy, rot), cx, sc),
+            "try": scale(rotateY(sp.x + sp.w, sp.y, cx, cy, rot), cy, sc),
+            blx: scale(rotateX(sp.x, sp.y + sp.h, cx, cy, rot), cx, sc),
+            bly: scale(rotateY(sp.x, sp.y + sp.h, cx, cy, rot), cy, sc),
+            brx: scale(rotateX(sp.x + sp.w, sp.y + sp.h, cx, cy, rot), cx, sc),
+            bry: scale(rotateY(sp.x + sp.w, sp.y + sp.h, cx, cy, rot), cy, sc)
+        };
+        bufs.vertexPositions[spIndex * 12 + 0] = spTrf.tlx / canvasSize.x * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 1] = (1 - spTrf.tly / canvasSize.y) * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 2] = spTrf.trx / canvasSize.x * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 3] = (1 - spTrf.try / canvasSize.y) * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 4] = spTrf.blx / canvasSize.x * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 5] = (1 - spTrf.bly / canvasSize.y) * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 6] = spTrf.blx / canvasSize.x * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 7] = (1 - spTrf.bly / canvasSize.y) * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 8] = spTrf.trx / canvasSize.x * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 9] = (1 - spTrf.try / canvasSize.y) * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 10] = spTrf.brx / canvasSize.x * 2 - 1;
+        bufs.vertexPositions[spIndex * 12 + 11] = (1 - spTrf.bry / canvasSize.y) * 2 - 1;
         var def = spriteDefs[sp.name];
         if (!def) {
             console.log("Sprite " + sp.name + " not found!");
